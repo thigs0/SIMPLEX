@@ -1,11 +1,9 @@
-function solveQR(Q, R, b)
-
-end
-
-function solveQRt(Q, R, b)
+include("./sistemas.jl")
+import .sistemas:solveQR, solveQRt
+using LinearAlgebra:qr
 
 function Simplex(A, b,c )
-    using LinearAlgebra 
+
     #= A(matrix) associada ao problema Ax=b 
        b(Vetor) associado ao problema Ax=b
        c(Vetor) índices dos custos 
