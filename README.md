@@ -1,2 +1,2 @@
 # SIMPLEX
-Create the simplex algoritmo in Julia language
+Create the simplex algorithm in Julia language
