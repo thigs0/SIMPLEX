@@ -1,9 +1,9 @@
 using LinearAlgebra
 
-function solveQR(Q, R, b)
-    #=Q(Matrix nxn)
-        R(matrix nxn)
-        b(vetor n)
+function solveQR(Q::Matrix, R::Matrix, b::Vector)
+    #=  Q(nxn)
+        R(nxn)
+        b(nx1)
 
         resolve o sistema Ax=b, com decomposição Q,R dada previamente
 
@@ -20,10 +20,10 @@ function solveQR(Q, R, b)
     return resul
 end
 
-function solveQRt(Q, R, b)
-    #=Q(Matrix nxn)
-        R(matrix nxn)
-        b(vetor n)
+function solveQRt(Q::Matrix, R::Matrix, b::Vector)
+    #=  Q(nxn)
+        R(nxn)
+        b(nx1)
 
         resolve o sistema (A)tx=b, com decomposição Q,R dada previamente
 
