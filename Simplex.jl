@@ -1,6 +1,4 @@
-include("./sistemas.jl")
-import .sistemas:solveQR, solveQRt
-using LinearAlgebra:qr
+include("./funcoes_simplex.jl")
 
 function Simplex(A, b, c)
 
