@@ -12,7 +12,7 @@ function Simplex(A, b, c)
     n,m = size(A) # n linhas de A, m colunas de A
     ccn = zeros(n-m) # cria um vetor nulo para armazenar custo não básico de tamanho n-m
 
-    B,N, cb,cn = dual(a, b, c) # Passa as bases por referência
+    B,N, cb,cn = fase1(a, b, c) # Passa as bases por referência
 
     Q, R = qr(B) # Realiza a decomposição QR da matriz B
     xcb = solveQR(Q, R, b) #encontra a solução básica factível
