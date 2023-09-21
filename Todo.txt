@@ -1,4 +1,6 @@
 1 - Finalizar o corpo do código Simplex
+    [] - Finalizar a função Atualiza
+    
 2 - Definir como mostrar as respostas
 3 - testar com uma base inicial conhecida
 4 - criar algoritmo que cria uma base inicial (métodas das 2 fases)
