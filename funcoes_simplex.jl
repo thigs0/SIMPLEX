@@ -40,12 +40,12 @@ function solveQRt(Q::Matrix, R::Matrix, b::Vector)
     return Q*resul
 end
 
-function Custo_relativo(Q::Matrix, R::Matrix, cb::Vector)
+function Custo_relativo(Q::LinearAlgebra.QRCompactWY, R::Matrix, cb::Vector)
     #=
     Encontra a posição que sai da base, usando o custo relativo
     =#
     #custos relativos
-    λ = solveQRt(Q,R,cb) # Calcula o vetor multiplicador simplex
+    λ = Q*transpose(R)\cb # Calcula o vetor multiplicador simplex
     
     for i in 1:(n-m)
         ccn = cn[i] - λ'N[:, i]
@@ -57,11 +57,11 @@ function Custo_relativo(Q::Matrix, R::Matrix, cb::Vector)
     return argmin(ccn) # posição que iremos alterar para entrar na base
 end
 
-function Direcao_simplex(Q, R, N, xcb, m)
+function Direcao_simplex(Q::LinearAlgebra.QRCompactWY, R::Matrix, N::Matrix, xcb::Vector, m::Int64)
     #=
 
     =#
-    y = solveQR(Q, R, N[:,pentra]) # encontra o passo simplex
+    y = R\(Q*N[:,pentra]) # encontra o passo simplex
     εc = ones(m)*Inf #Cria um vetor de tamanho m com valores infinitos
     for i in 1:m
         if y[i] > 0
@@ -73,7 +73,7 @@ end
 
 function var_deci(xbc::Vector, xb::Vector)
     #=
-    Retorna as variáveis de decição
+    Retorna as variáveis de decisão
     =#
     n = size(xbc)
     x = zeros(n)
@@ -91,17 +91,17 @@ function Atualiza(B::Matrix, N::Matrix, xb::Vector, xn::Vector, cb::Vector, cn::
     =#
     #pentra é a posição da coluna que irá para B e psai é a posição da coluna que irá para N
         
-    vetor_aux        = copy(B[1:end, psai])
-    B[1:end, psai]   = copy(N[1:end, pentra])
-    N[1:end, pentra] = copy(vetor_aux)
+    vetor_aux    = copy(B[:, psai])
+    B[:, psai]   = copy(N[:, pentra])
+    N[:, pentra] = copy(vetor_aux)
 
-    num_aux          = xn[pentra]
-    xn[pentra]       = xb[psai]
-    xb[psai]         = num_aux
+    num_aux      = xn[pentra]
+    xn[pentra]   = xb[psai]
+    xb[psai]     = num_aux
 
-    num_aux          = cb[psai]
-    cb[psai]         = cn[pentra]
-    cn[pentra]       = num_aux
+    num_aux      = cb[psai]
+    cb[psai]     = cn[pentra]
+    cn[pentra]   = num_aux
 
     return(B, N, xb, xn, cb, cn)
 end

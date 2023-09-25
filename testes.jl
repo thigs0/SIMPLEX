@@ -9,3 +9,7 @@ psai = 2
 xb = [2; 4]
 xn = [1; 3; 5]
 display(Atualiza(B, N, xb, xn, cb, cn, pentra, psai))
+Q, R = qr(B)
+Q = Matrix(Q)
+@time R\(Q*cb)
+@time solveQR(Q, R, cb)

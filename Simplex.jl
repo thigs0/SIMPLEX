@@ -15,14 +15,14 @@ function Simplex(A::Matrix, b::Vector, c::Vector)
 
     while true # ele acha a solução ou quebra, o que acontecer primeiro
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
-        xcb = solveQR(Q, R, b) #encontra a solução básica factível
-        for i in xcb # Se algum valor é negativo
-            if i < 0
+        xcb = R\(Q*b) #encontra a solução básica factível
+        for elem in xcb # Se algum elemento é negativo
+            if elem < 0
                 error("O sistema não têm solução")
             end
         end
 
-        f = cb'*xcb; # Calcula o valor da função
+        f = dot(cb,xcb) # Calcula o valor da função
 
         pentra = Custo_relativo(Q, R, cb)
         if pentra == "ótimo" # se já estamos em um ótimo
@@ -31,8 +31,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector)
         # Se não entrou, pentra mostra a posição que entra na base
 
         psai = Direcao_simplex(Q, R, N, xcb, m) # retorna o índice que sai da base
-        #Atualiza geral
-
+        
         B, N, xb, xn, cb, cn = Atualiza(B, N, xb, xn, cb, cn, pentra, psai)
     end
 end
