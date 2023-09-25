@@ -40,12 +40,11 @@ function solveQRt(Q::Matrix, R::Matrix, b::Vector)
     return Q*resul
 end
 
-function Custo_relativo(Q::Matrix, R::matrix, cb::Vector)
+function Custo_relativo(Q::Matrix, R::Matrix, cb::Vector)
     #=
-
     Encontra a posição que sai da base, usando o custo relativo
     =#
-    #custos relaticos
+    #custos relativos
     λ = solveQRt(Q,R,cb) # Calcula o vetor multiplicador simplex
     
     for i in 1:(n-m)
@@ -55,7 +54,7 @@ function Custo_relativo(Q::Matrix, R::matrix, cb::Vector)
     if min(ccn) < 0 #Teste de otimalidade
         return "ótimo"
     end
-    return = argmin(ccn) # posição que iremos alterar para entrar na base
+    return argmin(ccn) # posição que iremos alterar para entrar na base
 end
 
 function Direcao_simplex(Q, R, N, xcb, m)
@@ -86,8 +85,23 @@ function var_deci(xbc::Vector, xb::Vector)
     return x
 end
 
-function Atualiza(B, N, xb, xn, cb, cn, pentra, psai)
+function Atualiza(B::Matrix, N::Matrix, xb::Vector, xn::Vector, cb::Vector, cn::Vector, pentra::Int64, psai::Int64)
     #=
-        Com base no pentra e psai, atualiza a base e a não base
+    Com base no pentra e psai, atualiza a matriz básica B e a matriz não-básica N
     =#
+    #pentra é a posição da coluna que irá para B e psai é a posição da coluna que irá para N
+        
+    vetor_aux        = copy(B[1:end, psai])
+    B[1:end, psai]   = copy(N[1:end, pentra])
+    N[1:end, pentra] = copy(vetor_aux)
+
+    num_aux          = xn[pentra]
+    xn[pentra]       = xb[psai]
+    xb[psai]         = num_aux
+
+    num_aux          = cb[psai]
+    cb[psai]         = cn[pentra]
+    cn[pentra]       = num_aux
+
+    return(B, N, xb, xn, cb, cn)
 end

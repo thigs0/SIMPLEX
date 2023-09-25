@@ -35,6 +35,4 @@ function Simplex(A::Matrix, b::Vector, c::Vector)
 
         B, N, xb, xn, cb, cn = Atualiza(B, N, xb, xn, cb, cn, pentra, psai)
     end
-
-
 end
