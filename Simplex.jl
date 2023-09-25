@@ -10,7 +10,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector)
     n,m = size(A) # n linhas de A, m colunas de A
     ccn = zeros(n-m) # cria um vetor nulo para armazenar custo não básico de tamanho n-m
 
-    B, N, xb, xn, cb, cn = fase1(a, b, c) # Passa as bases por referência
+    B, N, xb, xn, cb, cn = fase1(A, b, c) # Passa as bases por referência
     #xb e xn são os índices do x na base e não base
 
     while true # ele acha a solução ou quebra, o que acontecer primeiro
@@ -24,7 +24,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector)
 
         f = dot(cb,xcb) # Calcula o valor da função
 
-        pentra = Custo_relativo(Q, R, cb)
+        pentra = Custo_relativo(Q, R, N , cb, cn)
         if pentra == "ótimo" # se já estamos em um ótimo
             return var_deci(xbc, xb)
         end

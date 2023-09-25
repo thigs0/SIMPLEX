@@ -40,7 +40,7 @@ function solveQRt(Q::Matrix, R::Matrix, b::Vector)
     return Q*resul
 end
 
-function Custo_relativo(Q::LinearAlgebra.QRCompactWY, R::Matrix, cb::Vector)
+function Custo_relativo(Q::LinearAlgebra.QRCompactWY, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
     #=
     Encontra a posição que sai da base, usando o custo relativo
     =#
@@ -104,4 +104,64 @@ function Atualiza(B::Matrix, N::Matrix, xb::Vector, xn::Vector, cb::Vector, cn::
     cn[pentra]   = num_aux
 
     return(B, N, xb, xn, cb, cn)
+end
+
+function Atualiza_fase1(B::Matrix, N::Matrix, xb::Vector, xn::Vector, cb::Vector, cn::Vector, cy::Vector, pentra::Int64, psai::Int64)
+    #=
+    Com base no pentra e psai, atualiza a matriz básica B e a matriz não-básica N
+    =#
+    #pentra é a posição da coluna que irá para B e psai é a posição da coluna que irá para N
+        
+    vetor_aux    = copy(B[:, psai])
+    B[:, psai]   = copy(N[:, pentra])
+    N[:, pentra] = copy(vetor_aux)
+
+    num_aux      = xn[pentra]
+    xn[pentra]   = xb[psai]
+    xb[psai]     = num_aux
+
+    num_aux      = cb[psai]
+    cb[psai]     = cn[pentra]
+    cn[pentra]   = num_aux
+
+    return(B, N, xb, xn, cb, cn)
+end
+
+function fase1(A::Matriz, b::Vector, c::Vector)
+
+    #Cria as variáveis
+    n,m = size(A);
+    B = Matrix{Float64}(I(n)) # criamos uma base inicial identidade 
+    N = copy(A)
+    xb = ones(n) # criamo o vetor básico
+    xn = zeros(m-n) # vetor não básico
+    cb = ones(n)
+    cn = ones(m-n)
+    cy = ones(n)
+
+    while true
+        Q, R = qr(B) # Realiza a decomposição QR da matriz B
+        xcb = R\(Q*b) #encontra a solução básica factível
+
+        for elem in xcb # Se algum elemento é negativo
+            if elem < 0
+                error("O sistema não têm solução")
+            end
+        end
+
+        f = dot(cy, xcb) # Calcula o valor da função
+
+        pentra = Custo_relativo(Q, R, N , cy, cn)
+        if pentra == "ótimo" # se já estamos em um ótimo
+            return var_deci(xbc, xb)
+        end
+        # Se não entrou, pentra mostra a posição que entra na base
+
+        psai = Direcao_simplex(Q, R, N, xcb, m) # retorna o índice que sai da base
+        
+        B, N, xb, xn, cb, cn, cy = Atualiza_fase1(B, N, xb, xn, cb, cn, cy, pentra, psai)
+    end
+
+    return  b0, N, xb, xn, cb, cn
+
 end
