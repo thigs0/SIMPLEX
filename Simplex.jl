@@ -13,8 +13,8 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
     if i == -1
         B, N, xb, xn, cb, cn = fase1(A, b, c) # Passa as bases por referência
     else
-        N = copy(A[:, 1:i])
-        B = copy(A[:, i+1:end])
+        N  = copy(A[:, 1:i])
+        B  = copy(A[:, i+1:end])
         xn = Vector(1:i)
         xb = Vector(i+1:m)
         cn = copy(c[1:i])

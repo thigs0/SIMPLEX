@@ -1,53 +1,13 @@
 using LinearAlgebra
 
-function solveQR(Q::Matrix, R::Matrix, b::Vector)
-    #=  Q(nxn)
-        R(nxn)
-        b(nx1)
-
-        resolve o sistema Ax=b, com decomposição Q,R dada previamente
-
-    =#
-    y = Q'*b
-    n = size(R)[1]
-    resul = copy(y)
-    for i in n:-1:1
-        for j in i+1:n
-            resul[i] -= R[i,j]*resul[j]                
-        end
-        resul[i] /= R[i,i]
-    end
-    return resul
-end
-
-function solveQRt(Q::Matrix, R::Matrix, b::Vector)
-    #=  Q(nxn)
-        R(nxn)
-        b(nx1)
-
-        resolve o sistema (A)tx=b, com decomposição Q,R dada previamente
-
-    =#
-    n = size(R)[1] #quantidade de linhas em R
-    resul = copy(b) #copia de b
-    R=R' #transposta da R
-    for i in 1:n
-        for j in 1:i-1
-            resul[i] -= R[i,j]*resul[j]                
-        end
-        resul[i] /= R[i,i]
-    end
-    return Q*resul
-end
-
-function Custo_relativo(Q, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
+function Custo_relativo(Q::LinearAlgebra.QRCompactWYQ, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
     #=
 
     Q::LinearAlgebra.QRCompactWY
     Encontra a posição que sai da base, usando o custo relativo
     =#
     #custos relativos
-    λ = (Q*transpose(R))\cb # Calcula o vetor multiplicador simplex
+    λ   = Q*(transpose(R)\cb) # Calcula o vetor multiplicador simplex
     ccn = zeros(length(cn))
     for i in 1:(length(cn))
         ccn[i] = cn[i] - λ'*N[:, i]
@@ -58,12 +18,12 @@ function Custo_relativo(Q, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
     return argmin(ccn) # posição que iremos alterar para entrar na base
 end
 
-function Direcao_simplex(Q, R::Matrix, N::Matrix, xcb::Vector, pentra::Int64)
+function Direcao_simplex(Q::LinearAlgebra.QRCompactWYQ, R::Matrix, N::Matrix, xcb::Vector, pentra::Int64)
     #=
     Q::LinearAlgebra.QRCompactWY
     =#
-    y = R\(Q*N[:,pentra]) # encontra o passo simplex
-    m = length(xcb)
+    y  = R\(Q*N[:,pentra]) # encontra o passo simplex
+    m  = length(xcb)
     εc = ones(m)*Inf #Cria um vetor de tamanho m com valores infinitos
     for i in 1:m
         if y[i] > 0
@@ -133,17 +93,17 @@ function fase1(A::Matrix, b::Vector, c::Vector)
 
     #Cria as variáveis
     n,m = size(A);
-    B = Matrix{Float64}(I(n)) # criamos uma base inicial identidade 
-    N = copy(A)
-    xb = ones(n) # criamo o vetor básico
-    xn = zeros(m-n) # vetor não básico
-    cb = ones(n)
-    cn = ones(m-n)
-    cy = ones(n)
+    B   = Matrix{Float64}(I(n)) # criamos uma base inicial identidade 
+    N   = copy(A)
+    xb  = ones(n) # criamos o vetor básico
+    xn  = zeros(m-n) # vetor não básico
+    cb  = ones(n)
+    cn  = ones(m-n)
+    cy  = ones(n)
 
     while true
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
-        xcb = R\(Q*b) #encontra a solução básica factível
+        xcb = R\Q*b #encontra a solução básica factível
 
         for elem in xcb # Se algum elemento é negativo
             if elem < 0
@@ -155,7 +115,7 @@ function fase1(A::Matrix, b::Vector, c::Vector)
 
         pentra = Custo_relativo(Q, R, N , cy, cn)
         if pentra == "ótimo" # se já estamos em um ótimo
-            return var_deci(xbc, xb)
+            return var_deci(xbc, xb, xn)
         end
         # Se não entrou, pentra mostra a posição que entra na base
 
