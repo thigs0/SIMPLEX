@@ -35,7 +35,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
         f = dot(cb, xcb) # Calcula o valor da função
         pentra = Custo_relativo(Q, R, N, cb, cn)
         if pentra == "ótimo" # se já estamos em um ótimo
-            return var_deci(xcb, xb, xn)
+            return var_deci(xcb, xb, xn), f
         end
         # Se não entrou, pentra mostra a posição que entra na base
 
