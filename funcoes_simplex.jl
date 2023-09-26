@@ -40,46 +40,48 @@ function solveQRt(Q::Matrix, R::Matrix, b::Vector)
     return Q*resul
 end
 
-function Custo_relativo(Q::LinearAlgebra.QRCompactWY, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
+function Custo_relativo(Q, R::Matrix, N::Matrix, cb::Vector, cn::Vector)
     #=
+
+    Q::LinearAlgebra.QRCompactWY
     Encontra a posição que sai da base, usando o custo relativo
     =#
     #custos relativos
-    λ = Q*transpose(R)\cb # Calcula o vetor multiplicador simplex
-    
-    for i in 1:(n-m)
-        ccn = cn[i] - λ'N[:, i]
+    λ = (Q*transpose(R))\cb # Calcula o vetor multiplicador simplex
+    ccn = zeros(length(cn))
+    for i in 1:(length(cn))
+        ccn[i] = cn[i] - λ'*N[:, i]
     end
-
-    if min(ccn) < 0 #Teste de otimalidade
+    if minimum(ccn) > 0 #Teste de otimalidade
         return "ótimo"
     end
     return argmin(ccn) # posição que iremos alterar para entrar na base
 end
 
-function Direcao_simplex(Q::LinearAlgebra.QRCompactWY, R::Matrix, N::Matrix, xcb::Vector, m::Int64)
+function Direcao_simplex(Q, R::Matrix, N::Matrix, xcb::Vector, pentra::Int64)
     #=
-
+    Q::LinearAlgebra.QRCompactWY
     =#
     y = R\(Q*N[:,pentra]) # encontra o passo simplex
+    m = length(xcb)
     εc = ones(m)*Inf #Cria um vetor de tamanho m com valores infinitos
     for i in 1:m
         if y[i] > 0
-            εc[i] = xcb/y[i]
+            εc[i] = xcb[i]/y[i]
         end
     end
     return argmin(εc) # encontra o mínimo, como o vetor tem componentes infinitas, não se preocupe com y negativo
 end
 
-function var_deci(xbc::Vector, xb::Vector)
+function var_deci(xcb::Vector, xb::Vector, xn::Vector)
     #=
     Retorna as variáveis de decisão
     =#
-    n = size(xbc)
+    n = length(xb)
     x = zeros(n)
-    for i in 1:N
-        if xb[i] < N
-            x[ xb[i] ] = xb[i]
+    for i in 1:length(xb)
+        if xb[i] <= n
+            x[ xb[i] ] = xcb[i]
         end
     end
     return x
@@ -127,7 +129,7 @@ function Atualiza_fase1(B::Matrix, N::Matrix, xb::Vector, xn::Vector, cb::Vector
     return(B, N, xb, xn, cb, cn)
 end
 
-function fase1(A::Matriz, b::Vector, c::Vector)
+function fase1(A::Matrix, b::Vector, c::Vector)
 
     #Cria as variáveis
     n,m = size(A);
