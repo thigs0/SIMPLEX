@@ -23,7 +23,7 @@ b = [4; 6.0; 18];
 A = [1 0.0 1 0 0;0 1 0 1 0;3 2 0 0 1];
 c = [-3.0; -5; 0; 0; 0];
 
-display(Simplex(A, b, c))
+#display(Simplex(A, b, c))
 
 #solução x = [2 6 2 0 0]
 # e f = -36'
@@ -36,3 +36,13 @@ c = [-1; 2;0;0];
 B, N, xb, xn, cb, cn = fase1(A, b, c)
 display(N)
 #solução=#
+A = [1 1 1 0;2 -1 3 1];
+b = [3;4];
+c = [1; -1;2;0]
+display(Simplex(A, b, c))
+
+#=
+A = [1 1 1 0 0;1 -1 0 1 0;-1 1 0 0 1] # exemplo da página 90
+b = [6;4;4]
+c = [-1; -2; 0;0;0]
+display(Simplex(A, b, c))=#

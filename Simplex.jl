@@ -25,7 +25,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
     while true # ele acha a solução ou quebra, o que acontecer primeiro
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
         xcb = R\(Q*b) #encontra a solução básica factível
-        
+
         for elem in xcb # Se algum elemento é negativo
             if elem < 0
                 error("O sistema não têm solução")

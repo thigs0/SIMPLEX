@@ -96,9 +96,9 @@ function fase1(A::Matrix, b::Vector, c::Vector)
     xn  = Vector(1:m)# vetor não básico
     cb  = ones(n)
     cn  = copy(c)
-    cy  = ones(n)
+    cy  = 100*ones(n)
 
-    for i = 1:n
+    for i =1:n
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
         xcb = R\Q*b #encontra a solução básica factível
 
@@ -117,7 +117,7 @@ function fase1(A::Matrix, b::Vector, c::Vector)
         
         B, N, xb, xn, cb, cn = Atualiza_fase1(B, N, xb, xn, cb, cn, cy, pentra, psai)
     end
-
+    display(B)
     return  B, N, xb, xn, cb, cn
 
 end
