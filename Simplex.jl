@@ -16,7 +16,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
         N  = copy(A[:, 1:i])
         B  = copy(A[:, i+1:end])
         xn = Vector(1:i)
-        xb = Vector(i+1:m)
+        xb = Vector{Int64}(i+1:m)
         cn = copy(c[1:i])
         cb = copy(c[i+1:m])
     end
