@@ -9,7 +9,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
 
     =#
     n,m = size(A) # n linhas de A, m colunas de A
-    ccn = zeros(m-n) # cria um vetor nulo para armazenar custo não básico de tamanho n-m
+
     if i == -1
         B, N, xb, xn, cb, cn = fase1(A, b, c) # Passa as bases por referência
     else
@@ -21,7 +21,6 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
         cb = copy(c[i+1:m])
     end
     #xb e xn são os índices do x na base e não base
-
     while true # ele acha a solução ou quebra, o que acontecer primeiro
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
         xcb = R\(Q*b) #encontra a solução básica factível
