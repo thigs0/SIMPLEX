@@ -9,7 +9,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
 
     =#
     n,m = size(A) # n linhas de A, m colunas de A
-
+ 
     if i == -1
         B, N, xb, xn, cb, cn = fase1(A, b, c) # Passa as bases por referência
     else
