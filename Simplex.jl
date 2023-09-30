@@ -1,11 +1,11 @@
 include("./funcoes_simplex.jl")
 
-function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
+function Simplex(A::Matrix, b::Vector, c::Vector, i::Int64=-1)
 
-    #= A(matrix) associada ao problema Ax=b 
-       b(Vetor) associado ao problema Ax=b
-       c(Vetor) índices dos custos 
-       i(int) posição que separa a base inicial, começa em i+1
+    #= A associada ao problema Ax=b 
+       b associado ao problema Ax=b
+       c índices dos custos 
+       i posição que separa a base inicial, começa em i+1
 
     =#
     n,m = size(A) # n linhas de A, m colunas de A
