@@ -33,3 +33,14 @@ A = [3 2 -1 0 0 0;1 2 0 -1 0 0.0;1 0 0 0 -1 0;0 1 0 0 0 1];
 b = [24; 12; 2; 15.0];
 c = [1; 1; 0; 0; 0; 0]
 display(Simplex(A, b, c))
+
+#Teste grande
+n=400
+m= 2*n
+A = rand(n,m)*n;
+A[:, n+1:end] = Matrix{Float64}(I(n))
+A[:,1] = ones(n)*1.0
+
+b = ones(n)
+c = ones(m)
+display(Simplex(A, b, c, n))
