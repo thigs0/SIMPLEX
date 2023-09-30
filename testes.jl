@@ -5,19 +5,21 @@ include("./Simplex.jl")
 b = [4; 6.0; 18];
 A = [1 0.0 1 0 0;0 1 0 1 0;3 2 0 0 1];
 c = [-3.0; -5; 0; 0; 0];
-
-display(Simplex(A, b, c))
+@time s = Simplex(A, b, c)
+@time Simplex(A, b, c, 2)
+display(s)
 #solução x = [2 6 2 0 0]
 # e f = -36'
 
 
 #Problema de pl Ilimitado sem solução
 # Lista 2 (e)
-
+println()
 A = [1 -1 -1 0; -0.5 1 0 1];
 b = [1; 2];
 c = [1; -2; 0; 0];
-display(Simplex(A, b, c))
+s = Simplex(A, b, c)
+display(s)
 
 
 #Problema de Pl com solução sendo uma reta

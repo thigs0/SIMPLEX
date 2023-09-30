@@ -21,7 +21,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i::Int64=-1)
         cb = copy(c[i+1:m])
     end
     if length(size(B)) == 0 # se a fase um retornou um texto de erro
-        return "O problema não tem solução"
+        return "O sistema não tem solução"
     end
    
     #xb e xn são os índices do x na base e não base
