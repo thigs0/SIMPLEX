@@ -92,6 +92,9 @@ function fase1(A::Matrix, b::Vector, c::Vector)
    for k in 1:50
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
         xcb = R\Q*b #encontra a solução básica factível
+        if minimum(xcb) < 0
+            return "O problema não tem solução"
+        end
         f = fun(xb, m) # Calcula o valor da função
         if f == 0
             break
@@ -107,7 +110,6 @@ function fase1(A::Matrix, b::Vector, c::Vector)
         psai = Direcao_simplex(Q, R, N, xcb, pentra) # retorna o índice que sai da baseS
 
         B, N, xb, xn, cb, cn = Atualiza(B, N, xb, xn, cb, cn, pentra, psai)
-        #B, N, xb, xn, cb, cn = Atualiza_fase1(B, N, xb, xn, cb, cn, cy, pentra, psai)
         
     end
     

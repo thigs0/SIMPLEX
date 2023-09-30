@@ -20,14 +20,17 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i=-1)
         cn = copy(c[1:i])
         cb = copy(c[i+1:m])
     end
+    if length(size(B)) == 0 # se a fase um retornou um texto de erro
+        return "O problema não tem solução"
+    end
+   
     #xb e xn são os índices do x na base e não base
     while true # ele acha a solução ou quebra, o que acontecer primeiro
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
         xcb = R\(Q*b) #encontra a solução básica factível
-
         for elem in xcb # Se algum elemento é negativo
             if elem < 0
-                error("O sistema não têm solução")
+                return "O sistema não têm solução"
             end
         end
 
