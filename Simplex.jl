@@ -6,7 +6,6 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i::Int64=-1)
        b associado ao problema Ax=b
        c índices dos custos 
        i posição que separa a base inicial, começa em i+1
-
     =#
     n,m = size(A) # n linhas de A, m colunas de A
  
