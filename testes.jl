@@ -39,12 +39,18 @@ c = [-1;-1;0;0;0];
 display(Simplex(A, b, c))
 
 #Teste grande
-n=400
-m= 2*n
-A = rand(n,m)*n;
-A[:, n+1:end] = Matrix{Float64}(I(n))
-A[:,1] = ones(n)*1.0
+n = 4
+m = 2*n
+A = zeros(n+1,m)*n;
+A[1,1:n] = rand(n)
+for i in 1:n
+     A[i+1, i] = 1.0
+     A[i+1,i+n]= 1.0
+end
 
-b = ones(n)
-c = ones(m)
-display(Simplex(A, b, c, n))
+b = ones(n+1)
+c = zeros(m)
+display(A)
+display(b)
+c[1:n] = rand(n)*-1
+display(Simplex(A, b, c))
