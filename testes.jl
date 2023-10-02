@@ -1,6 +1,8 @@
 include("./funcoes_simplex.jl")
 include("./Simplex.jl")
+using Random
 
+Random.seed!(3)
 #Problema de Pl com base inicial dada
 b = [4; 6.0; 18];
 A = [1 0.0 1 0 0;0 1 0 1 0;3 2 0 0 1];
@@ -39,10 +41,10 @@ c = [-1;-1;0;0;0];
 display(Simplex(A, b, c))
 
 #Teste grande
-n = 4
+n = 30
 m = 2*n
 A = zeros(n+1,m)*n;
-A[1,1:n] = rand(n)
+A[1,1:n] = ones(n)
 for i in 1:n
      A[i+1, i] = 1.0
      A[i+1,i+n]= 1.0
@@ -51,6 +53,5 @@ end
 b = ones(n+1)
 c = zeros(m)
 display(A)
-display(b)
 c[1:n] = rand(n)*-1
 display(Simplex(A, b, c))
