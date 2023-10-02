@@ -23,7 +23,7 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i::Int64=-1)
     if length(size(B)) == 0 # se a fase um retornou um texto de erro
         return "O sistema não tem solução"
     end
-   
+    f = Inf
     #xb e xn são os índices do x na base e não base
     while true # ele acha a solução ou quebra, o que acontecer primeiro
         Q, R = qr(B) # Realiza a decomposição QR da matriz B
@@ -33,7 +33,9 @@ function Simplex(A::Matrix, b::Vector, c::Vector, i::Int64=-1)
                 return "O sistema não têm solução"
             end
         end
-
+        if dot(cb, xcb) == f
+            return var_deci(xcb, xb, xn), f
+        end
         f = dot(cb, xcb) # Calcula o valor da função
         pentra = Custo_relativo(Q, R, N, cb, cn)
         if pentra == "ótimo" # se já estamos em um ótimo
