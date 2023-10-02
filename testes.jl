@@ -1,6 +1,8 @@
 include("./funcoes_simplex.jl")
 include("./Simplex.jl")
 using Random
+using Plots
+using TickTock
 
 Random.seed!(3)
 #Problema de Pl com base inicial dada
@@ -41,17 +43,32 @@ c = [-1;-1;0;0;0];
 display(Simplex(A, b, c))
 
 #Teste grande
-n = 30
-m = 2*n
-A = zeros(n+1,m)*n;
-A[1,1:n] = ones(n)
-for i in 1:n
-     A[i+1, i] = 1.0
-     A[i+1,i+n]= 1.0
+function pl_g(n)
+     m = 2*n
+     A = zeros(n+1,m)*n;
+     A[1,1:n] = ones(n)
+     for i in 1:n
+          A[i+1, i] = 1.0
+          A[i+1,i+n]= 1.0
+     end
+
+     b = ones(n+1)
+     c = zeros(m)
+     c[1:n] = rand(n)*-1
+     Simplex(A, b, c)
 end
 
-b = ones(n+1)
-c = zeros(m)
-display(A)
-c[1:n] = rand(n)*-1
-display(Simplex(A, b, c))
+k=200
+x=Vector(1:k)
+y=zeros(k)
+for i in 1:k
+     start = time()
+     pl_g(i)
+     y[i] = time()-start
+end
+
+s = scatter(x,y, xlabel="Tamanho de linhas do PL", ylabel="Tempo necessário para resolver (s)")
+savefig(s, "iter.png")
+
+s = scatter(x,y, xlabel="Tamanho de linhas do PL", ylabel="Log do tempo necessário para resolver (s)", yaxis=:log, xaxis=:log)
+savefig(s, "iter_log.png")
