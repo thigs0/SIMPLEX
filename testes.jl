@@ -1,5 +1,6 @@
 include("./funcoes_simplex.jl")
 include("./Simplex.jl")
+
 using Random
 using Plots
 using TickTock
@@ -10,9 +11,10 @@ b = [4; 6.0; 18];
 A = [1 0.0 1 0 0;0 1 0 1 0;3 2 0 0 1];
 c = [-3.0; -5; 0; 0; 0];
 s = Simplex(A, b, c)
-#@time s = Simplex(A, b, c)
-#@time Simplex(A, b, c, 2)
+@time s = Simplex(A, b, c)
+@time Simplex(A, b, c, 2)
 display(s)
+
 #solução x = [2 6 2 0 0]
 # e f = -36'
 
@@ -68,7 +70,7 @@ for i in 1:k
 end
 
 s = scatter(x,y, xlabel="Tamanho de linhas do PL", ylabel="Tempo necessário para resolver (s)")
-savefig(s, "iter.png")
+savefig(s, "image/iter.png")
 
 s = scatter(x,y, xlabel="Tamanho de linhas do PL", ylabel="Log do tempo necessário para resolver (s)", yaxis=:log, xaxis=:log)
-savefig(s, "iter_log.png")
+savefig(s, "image/iter_log.png")
