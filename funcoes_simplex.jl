@@ -71,10 +71,14 @@ end
 function fase1(A::Matrix, b::Vector, c::Vector)
 
     #Cria as variáveis
-    function fun(xb::Vector,m::Int64)
+    function fun(xb::Vector, m::Int64)
+        # A função retorna a quantidade de x artificial no x básico
+        #= xb é um x básico 
+        #  m é o índice que apartir dele temos o x artificial criado
+        =#
         i =0
         for j in xb
-            if j>m
+            if j > m # se esse x é artificial
                 i+=1
             end
         end
