@@ -7,7 +7,7 @@ Ax = b
 
 i is a optional param if the linear sistem have initial base in colum i+1
 
-$A \in \mathbb{R}^{n\times m},~ b\in \mathbb{R}^{m},  c \in \mathbb{R}^{m}~~and~~i\in \mathbb{R}$
+$$A \in \mathbb{R}^{n\times m},~ b\in \mathbb{R}^{m},  c \in \mathbb{R}^{m}~~and~~i\in \mathbb{R}$$
 
 ``` Simplex(A, b, c, i)```
 
