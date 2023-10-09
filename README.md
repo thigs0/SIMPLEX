@@ -15,8 +15,11 @@ this function return a vector (a, b)
 a is the x minimum
 b is the value of function in x minimum
 
-The computacional time is exponential
+The computational time is exponential
 
-![[image/iter.png]]
+![Computational time](image/iter.png)
 
+The logaritmum of computational time is linear
+
+![Log computational time](image/iter_log.png)
 
