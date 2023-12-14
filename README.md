@@ -1,4 +1,4 @@
-# SIMPLEX
+### SIMPLEX
 Create the simplex algorithm in Julia language  
 
 To use the function simplex, use the matrix A, vector b 
@@ -23,7 +23,7 @@ The logaritmum of computational time is linear
 
 ![Log computational time](image/iter_log.png)
 
-#Dual simplex
+### Dual simplex
 
 Create the Dual simplex algorithm in Julia language
 
@@ -41,7 +41,7 @@ a is the x minimum
 b is the value of function in x minimum
 
 
-# To-do
+### To-do
 [] - define the return variable at dual simplex
 [] - test dual simplex
 [] - test time to solve dual simplex
