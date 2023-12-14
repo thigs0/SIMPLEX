@@ -43,5 +43,7 @@ b is the value of function in x minimum
 
 ### To-do
 [] - define the return variable at dual simplex
+
 [] - test dual simplex
+
 [] - test time to solve dual simplex
